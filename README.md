@@ -62,4 +62,9 @@ V-Thread (TX)             Idempotency Set            Account A (Lock 1)        A
      │─── 6. unlock() ──────────────────────────────────────>│                         │
      │    (Libera menor ID)      │                           │                         │
 
+## 🚀 DataFlow Diagram
+
+<<<<<<< HEAD
+    ![Diagrama de Fluxo de Dados: Volátil vs. Persistente ](stress_test.png)
+=======
 ```

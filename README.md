@@ -63,8 +63,5 @@ V-Thread (TX)             Idempotency Set            Account A (Lock 1)        A
      │    (Libera menor ID)      │                           │                         │
 
 ```
-## 🚀 DataFlow Diagram
+![Result do Denied Test](stress_test.png)
 
-<<<<<<< HEAD
-    ![Diagrama de Fluxo de Dados: Volátil vs. Persistente ](stress_test.png)
-=======

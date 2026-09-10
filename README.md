@@ -63,5 +63,7 @@ V-Thread (TX)             Idempotency Set            Account A (Lock 1)        A
      │    (Libera menor ID)      │                           │                         │
 
 ```
-![Result do Denied Test](stress_test.png)
+
+
+![Result Stress Test](stress-test.png)
 

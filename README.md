@@ -179,6 +179,6 @@ V-Thread (TX)             Idempotency Set            Account A (Lock 1)        A
 ```
 
 
-![Result Stress Test](./img/stress-test.png)
+![Result Stress Test](/img/stresstest.png)
 
 <img src="https://github.com/inftecnologydegree/Java_financial-engine/stress-test.png" alt="Result">

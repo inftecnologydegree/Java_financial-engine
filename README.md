@@ -11,34 +11,38 @@ To achieve stable horizontal scaling, this engine separates infrastructure const
 The telemetry and control cycle loops back into itself using a **Netflix-style Adaptive Concurrency Limiter**, dynamically scaling transaction velocity based on hardware saturation and live database network response latency.
 
 ```mermaid
-architecture-beta
-    %% High-Throughput Adaptive Architecture
-    group Ingestion[Ingestão - NIO Map]
-        service file("stress_transactions.txt")
-        service nio("FileIngestionService<br>(MappedByteBuffer)")
-    end
+graph TD
+    %% Define Styling Classes
+    classDef ingestion fill:#1a237e,stroke:#3f51b5,stroke-width:2px,color:#fff;
+    classDef processing fill:#2e7d32,stroke:#4caf50,stroke-width:2px,color:#fff;
+    classDef domain fill:#b71c1c,stroke:#f44336,stroke-width:2px,color:#fff;
 
-    group Processing[Engine Core & Telemetry Loop]
-        service semaphore("Adaptive Semaphore<br>(Dynamic Permits x)")
-        service threads("Virtual Thread Pool<br>(Executors)")
-        service metric("Latency Monitor<br>(Atomic Nano-Tracking)")
-        service algo("Netflix-Style Control Loop<br>(Little's Law Adjustment)")
+    %% Ingestion Group
+    subgraph Ingestion [Ingestão - I/O Bound]
+        A[stress_transactions.txt] -->|Direct OS Mirror| B(FileIngestionService<br>MappedByteBuffer)
     end
+    class B ingestion;
 
-    group Domain[Domain Isolation]
-        service lockOrder("Determinismo de Locks<br>(p = 8 Check)")
-        service state("Account Domain<br>(Mutação de Estado)")
+    %% Processing Group
+    subgraph Processing [Engine Core & Telemetry Loop]
+        C[Adaptive Semaphore<br>Dynamic Permits x] -->|Rate Limited Gate| D(Virtual Thread Pool<br>Executors)
+        D -->|Execution Nano Logs| E(Latency Monitor<br>Atomic Rolling Tracking)
+        E -->|Rolling Ms Metric| F(Netflix Control Loop<br>Little's Law Engine)
+        F -->|Dynamic Override| C
     end
+    class C,D,E,F processing;
 
-    file -- Direct OS Mirror --> nio
-    nio -- List of Records --> semaphore
-    semaphore -- Rate Limited Gate --> threads
-    threads -- Shared Memory --> lockOrder
-    lockOrder -- tryLock() --> state
-    state -- Execution Time Logs --> metric
-    metric -- Rolling Average Ms --> algo
-    algo -- Dynamic Override (Delta Rate) --> semaphore
+    %% Domain Group
+    subgraph Domain [Domain Isolation]
+        G[Determinismo de Locks<br>p = 8 Core Check] -->|tryLock with Timeout| H((Account Domain<br>State Mutation))
+    end
+    class G,H domain;
+
+    %% Inter-group connections
+    B -->|List of Records| C
+    D -->|Shared Memory Pipeline| G
 ```
+
 
 ---
 
